@@ -4,7 +4,7 @@ class Car
 	instance variables
 		public color: Color;
 		public kilometers: rat;
-		public price: rat;
+		public price: rat; --minimum price accepted by seller
 	operations
 		public Car: () ==> Car --default constructor
 			Car() == (
@@ -21,4 +21,23 @@ class Car
 				price := p;
 				return self
 			) 
+			pre km > 0 and p > 0;
+			
+		public setColor: Color ==> Car
+		setColor(c) == (
+			color := c;
+			return self
+		);
+		
+		public setKilometers: rat ==> Car
+		setKilometers(km) == (
+			kilometers := km;
+			return self
+		);
+		
+		public setPrice: rat ==> Car
+		setPrice(p) == (
+			price := p;
+			return self
+		);
 end Car

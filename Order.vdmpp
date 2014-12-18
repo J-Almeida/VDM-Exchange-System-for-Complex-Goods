@@ -1,0 +1,28 @@
+--represents an order
+class Order
+types
+		public Color = <RED> | <BLUE> | <GREEN>;
+	instance variables
+		public color: Color;
+		public kilometers: rat; --maximum kilometers accepted by buyer
+		public price: rat; --maximum price accepted by buyer
+	operations
+		public setColor: Color ==> Order
+		setColor(c) == (
+			color := c;
+			return self
+		);
+		
+		public setKilometers: rat ==> Order
+		setKilometers(km) == (
+			kilometers := km;
+			return self
+		);
+		
+		public setPrice: rat ==> Order
+		setPrice(p) == (
+			price := p;
+			return self
+		);
+		
+end Order
