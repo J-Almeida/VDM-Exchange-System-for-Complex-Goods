@@ -1,0 +1,24 @@
+class Car
+	types
+		public Color = <RED> | <BLUE> | <GREEN>;
+	instance variables
+		public color: Color;
+		public kilometers: rat;
+		public price: rat;
+	operations
+		public Car: () ==> Car --default constructor
+			Car() == (
+				color := <RED>;
+				kilometers := 0;
+				price := 0;
+				return self
+			);
+			
+		public Car: Color * rat * rat ==> Car --constructor with parameters
+			Car(c, km, p) == (
+				color := c;
+				kilometers := km;
+				price := p;
+				return self
+			) 
+end Car

@@ -1,0 +1,12 @@
+class Stock
+instance variables
+	cars: set of Car := {};
+	
+operations
+	public addCar: Car ==> Stock
+		addCar(c) == (
+			cars := cars union {c};
+			return self
+		)
+		post c in set cars
+end Stock
