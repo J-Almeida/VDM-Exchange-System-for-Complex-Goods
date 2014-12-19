@@ -1,0 +1,29 @@
+--represents a queue of orders
+class OrderQueue
+	types
+		public Contents = seq of Order --contents of the queue
+	instance variables
+		private contents: Contents := []
+	operations
+	
+	public push: Order ==> () --push an order
+		push(order) == (
+			contents := contents ^ [order];
+		);
+	
+	public pop: () ==> () -- remove the next order from the queue
+		pop() == (
+			contents := tl(contents);
+		);
+		
+	public getHead: () ==> Order
+		getHead() == (
+			return hd(contents);
+		);
+		
+	public isEmpty: () ==> bool
+		isEmpty() == (
+			return contents = []
+		);
+		
+end OrderQueue

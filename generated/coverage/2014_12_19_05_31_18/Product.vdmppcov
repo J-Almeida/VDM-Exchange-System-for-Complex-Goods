@@ -1,0 +1,37 @@
+--Represents an actual product, with a type and a set of attributes
+class Product
+instance variables
+	private attributes: set of Attribute := {};
+	public type: ProductType;
+operations
+	--class constructor by type
+	public Product: ProductType ==> Product
+		Product(t) == (
+			type := t;
+			return self;
+		);
+		
+	--adds an attribute to this product
+	--returns true upon success
+	public addAttribute: Attribute ==> bool
+		addAttribute(attr) == (
+			if 
+				type.accepts(attr.name) --check if this product type accepts this attribute
+			then(
+				attributes := attributes union {attr};
+				return true;
+			)
+			else
+				return false;
+		);
+		
+	--returns an attribute of a given type
+	public getAttribute: seq of char ==> Attribute
+		getAttribute(name) == (
+			for all attribute in set attributes do(
+			if attribute.name = name then
+				return attribute
+			);
+			return new Attribute();
+		)
+end Product

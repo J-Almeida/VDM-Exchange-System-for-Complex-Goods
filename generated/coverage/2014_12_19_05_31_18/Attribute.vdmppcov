@@ -1,0 +1,77 @@
+--Represents an attribute of a product, whose value can be represented by either a string or a rational number
+--Type of attribute is define by which of the constructors is used
+class Attribute
+types
+	public Type = <NUMERIC> | <STRING> | <INTERVAL>
+values
+-- TODO Define values here
+instance variables
+	private numericValue: rat;
+	private minValue: rat;
+	private maxValue: rat;
+	private stringValue : seq of char;
+	private type: Type;
+	public name: seq of char := "";
+operations
+
+	public Attribute: seq of char * rat ==> Attribute --creates a numeric attribute
+		Attribute(n, value) == (
+			type := <NUMERIC>;
+			name := n;
+			numericValue := value;
+			return self;
+		);
+	
+	public Attribute: seq of char * seq of char ==> Attribute --creates a string attribute
+		Attribute(n, value) == (
+			type := <STRING>;
+			name := n;
+			stringValue := value;
+			return self;
+		);
+		
+	public Attribute: seq of char * rat * rat ==> Attribute --creates an interval attribute
+		Attribute(n, min, max) == (
+			type := <INTERVAL>;
+			name := n;
+			minValue := min;
+			maxValue := max;
+			return self;
+		)pre max >= min;
+	--returns with a token with the attribute value
+	--CAUTION: can only be used for equality or inequality operations
+	public getValue: () ==> token 
+		getValue() == (
+			if type = <NUMERIC>
+			then
+				return mk_token(numericValue)
+			else
+				return mk_token(stringValue)
+		);
+		
+	--checks if the value is between an interval
+	--returns false if the attribute is a string
+	public checkBoundaries: rat * rat ==> bool 
+		checkBoundaries(min, max) == (
+			if type = <NUMERIC>
+			then
+				return (numericValue >= min and numericValue <= max)
+			else
+				return false
+		);
+		
+	--compares itself with another attribute
+	public compare: Attribute ==> bool
+		compare(other) == (
+			if type = <INTERVAL>
+			then
+				return other.checkBoundaries(minValue, maxValue)
+			else
+				return getValue() = other.getValue()
+		);
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Attribute

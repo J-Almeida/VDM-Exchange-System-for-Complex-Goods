@@ -1,0 +1,133 @@
+class ShopTest
+instance variables
+	private carType: ProductType;
+	private carColor: Attribute;
+	private carYear: Attribute;
+	private car: Product;
+	
+	private order: Order;
+	private shop: Shop;
+operations
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+	
+	--test if attributes are comparing correctly
+	private testAttributesComparison: () ==> ()
+	testAttributesComparison() == (
+		dcl n1:Attribute := new Attribute("number", 10);
+		dcl n2:Attribute := new Attribute("number", 16);
+		dcl n3:Attribute := new Attribute("number", 16);
+		dcl i1:Attribute := new Attribute("number", 10, 15);
+		dcl w1:Attribute := new Attribute("word", "hello");
+		dcl w2:Attribute := new Attribute("word", "hello");
+		dcl w3:Attribute := new Attribute("word", "bye");
+		assertTrue(not n1.compare(n2));
+		assertTrue(n2.compare(n3));
+		assertTrue(i1.compare(n1));
+		assertTrue(not i1.compare(n2));
+		assertTrue(w1.compare(w2));
+		assertTrue(not w3.compare(w2));
+		assertTrue(not w3.compare(i1));
+		assertTrue(not i1.compare(w1));
+	);
+
+	private testProduct: () ==> () --create the attributes, product type and actual product for a car
+		testProduct() == (
+			--create a new type "Car", which can have a color
+			carType:= new ProductType("Car");
+			assertTrue(carType.name = "Car");
+			carType.addAttributeAcceptance("color");
+			carType.addAttributeAcceptance("year");
+			assertTrue(carType.accepts("color"));
+			assertTrue(carType.accepts("year"));
+			assertTrue(carType.accepts("width") = false);
+			
+			--create new attributes of the type "Color" and "Year" for our example car
+			carColor := new Attribute("color", "red");
+			carYear := new Attribute("year", 2001);
+			--check the getValue function
+			assertTrue(carColor.getValue() = mk_token("red"));
+			assertTrue(carYear.getValue() = mk_token(2001));
+			
+			--now lets actually create a car
+			car := new Product(carType);
+			--and add a year and a color
+			assertTrue(car.addAttribute(carColor));
+			assertTrue(car.addAttribute(carYear));
+			--create a false attribute, to check if it's rejected
+			assertTrue(not car.addAttribute(new Attribute("width", 50)));
+			
+			
+			
+		);
+		
+	private testStock: () ==> ()
+		testStock() == (
+			-- create an order for a red car
+			order := new Order(carType);
+			assertTrue(order.addAttribute(new Attribute("color", "red")));
+			--
+			--create a false attribute, to check if it's rejected
+			assertTrue(not order.addAttribute(new Attribute("width", 50)));
+			
+			--place the order in our shop
+			
+			--add our car to the shop's stock
+			shop := new Shop();
+			shop.addProduct(car);
+			shop.addOrder(order);
+		);
+		
+	private testOrderProductComparison: () ==> ()
+		testOrderProductComparison() == (
+			dcl c:Product := new Product(carType);
+			dcl o1:Order := new Order(carType);
+			dcl o2:Order := new Order(carType);
+			dcl red:Attribute := new Attribute("color", "red");
+			dcl blue:Attribute := new Attribute("color", "blue");
+			dcl year:Attribute := new Attribute("year", 2000);
+			shop := new Shop();
+			assertTrue(c.addAttribute(red));
+			assertTrue(o1.addAttribute(red));
+			assertTrue(o2.addAttribute(blue));
+			assertTrue(shop.compareOrderProduct(o1, c));
+			assertTrue(not shop.compareOrderProduct(o2, c));
+			assertTrue(o1.addAttribute(year));
+			assertTrue(not shop.compareOrderProduct(o1, c));
+		);
+	
+	private testOrderFullfilment: () ==> ()
+		testOrderFullfilment() == (
+			dcl c:Product := new Product(carType);
+			dcl o1:Order := new Order(carType);
+			dcl o2:Order := new Order(carType);
+			dcl red:Attribute := new Attribute("color", "red");
+			dcl blue:Attribute := new Attribute("color", "blue");
+			dcl year:Attribute := new Attribute("year", 2000);
+			shop := new Shop();
+			
+			assertTrue(c.addAttribute(red));
+			assertTrue(o1.addAttribute(red));
+			assertTrue(o2.addAttribute(blue));
+			
+			shop.addProduct(c);
+			shop.addOrder(o1);
+			shop.addOrder(o2);
+			
+			shop.answerAll();		
+			
+		);
+		
+		
+	public static main: () ==> ()
+		main() == (
+			dcl shopTest: ShopTest := new ShopTest();
+			shopTest.testProduct();
+			shopTest.testStock();
+			shopTest.testAttributesComparison();
+			shopTest.testOrderProductComparison();
+			shopTest.testOrderFullfilment();
+		);
+
+end ShopTest
