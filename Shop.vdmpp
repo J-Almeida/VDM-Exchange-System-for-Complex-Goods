@@ -1,9 +1,70 @@
 --represents a shop, with a stock of cars and a queue of orders
 class Shop
 instance variables
-	private stock: Stock;
-	private orderQueue: OrderQueue;
+	private stock: set of Product := {};
+	private orderQueue: OrderQueue := new OrderQueue();
 operations
-functions
+	public addProduct: Product ==> ()
+		addProduct(product) == (
+			stock := stock union {product}
+		);
+		
+	public removeProduct: Product ==> ()
+		removeProduct(product) == (
+			stock := stock \{product}
+		)pre product in set stock;
+		
+	public addOrder: Order ==> ()
+		addOrder(order) == (
+			orderQueue.push(order);
+		);
 	
+	public compareOrderProduct: Order * Product ==> bool
+		compareOrderProduct(order, product) == (
+			if order.productType = product.type then(--first check if the products are of the same type
+				--for each attribute in the order, see if the product has a matching attribute
+				for all orderAttribute in set order.attributes do(
+					--get the corresponding product attribute
+					dcl productAttribute:Attribute := product.getAttribute(orderAttribute.name);
+						if productAttribute.name <> "" then( --if it exists
+								if(not orderAttribute.compare(productAttribute)) then 
+									return false; --if they don't match, return false
+							)
+						else return false; --product doesn't have one of the order attributes, return false
+					);
+					return true;
+			)
+			else return false;
+		);
+		
+	--returns if the order was successfuly fullfiled
+	public answerNextOrder: () ==> bool
+		answerNextOrder() == (
+			dcl nextOrder: Order := orderQueue.getHead();
+			for all product in set stock do(
+				if(compareOrderProduct(nextOrder, product)) then(
+					removeProduct(product);
+					return true;
+				)
+			);
+			--failed to fill the order
+			return false;
+	);
+	
+	--tries to answer every order on the queue
+	public answerAll: () ==> ()
+		answerAll() == (
+			dcl remainingQueue:OrderQueue := new OrderQueue();
+			while not orderQueue.isEmpty() do(
+				if answerNextOrder() then(	
+					orderQueue.pop(); --order was filled, just pop it form the queue
+				)else(
+					remainingQueue.push(orderQueue.getHead()); --order was filled, re-enqueue it before popping
+					orderQueue.pop();
+				);
+			);
+			orderQueue := remainingQueue; --re-enqueue unfullfiled orders
+		);
+functions
+
 end Shop

@@ -1,10 +1,28 @@
 --represents an order
 class Order
 types
-	instance variables
-		public productType: ProductType;
-		public attributes: Attribute;
-	operations
-
+instance variables
+	public productType: ProductType;
+	public attributes: set of Attribute := {};
+operations
+	--class constructor by type
+	public Order: ProductType ==> Order
+		Order(type) == (
+			productType := type;
+			return self;
+		);
+	--adds an attribute to this order
+	--returns true upon success
+	public addAttribute: Attribute ==> bool
+		addAttribute(attr) == (
+			if 
+				productType.accepts(attr.name) --check if this ordered product type accepts this attribute
+			then(
+				attributes := attributes union {attr};
+				return true;
+			)
+			else
+				return false;
+		)	
 		
 end Order

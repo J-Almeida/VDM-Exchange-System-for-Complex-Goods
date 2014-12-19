@@ -6,18 +6,24 @@ class OrderQueue
 		private contents: Contents := []
 	operations
 	
-	public push: Order ==> OrderQueue --push an order
+	public push: Order ==> () --push an order
 		push(order) == (
 			contents := contents ^ [order];
-			return self
 		);
 	
-	public pop: () ==> Order --get the next order and remove it from the queue
+	public pop: () ==> () -- remove the next order from the queue
 		pop() == (
-			dcl ret:Order := hd(contents);
 			contents := tl(contents);
-			return ret
-		)
+		);
 		
+	public getHead: () ==> Order
+		getHead() == (
+			return hd(contents);
+		);
+		
+	public isEmpty: () ==> bool
+		isEmpty() == (
+			return contents = []
+		);
 		
 end OrderQueue

@@ -23,5 +23,15 @@ operations
 			)
 			else
 				return false;
+		);
+		
+	--returns an attribute of a given type
+	public getAttribute: seq of char ==> Attribute
+		getAttribute(name) == (
+			for all attribute in set attributes do(
+			if attribute.name = name then
+				return attribute
+			);
+			return new Attribute();
 		)
 end Product
