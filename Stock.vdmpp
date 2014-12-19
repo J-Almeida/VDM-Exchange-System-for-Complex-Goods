@@ -1,22 +1,20 @@
---stores the cars in stock
+--stores the products in stock
 class Stock
 instance variables
-	cars: set of Car := {};
+	public products: set of Product := {};
 operations
-	public addCar: Car ==> Stock --adds a car to stock
-		addCar(c) == (
-			cars := cars union {c};
-			return self
+	public addProduct: Product ==> () --adds a product to stock
+		addProduct(p) == (
+			products := products union {p}
 		)
-		post c in set cars;
+		post p in set products;
 	
-	public removeCar: Car ==> Stock --removes a car from stock
-		removeCar(c) == (
-			cars := cars \ {c};
-			return self
+	public removeProduct: Product ==> () --removes a product from stock
+		removeProduct(p) == (
+			products := products \ {p}
 		)
-		pre c in set cars
-		post c not in set cars;
+		pre p in set products
+		post p not in set products;
 	
 functions
 

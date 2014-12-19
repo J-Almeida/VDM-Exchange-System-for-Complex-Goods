@@ -1,7 +1,5 @@
 --represents a shop, with a stock of cars and a queue of orders
 class Shop
-types
-		public Color = <RED> | <BLUE> | <GREEN>;
 instance variables
 	private stock: Stock;
 	private orderQueue: OrderQueue;

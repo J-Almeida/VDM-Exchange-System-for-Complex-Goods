@@ -1,0 +1,30 @@
+class ProductType
+
+instance variables
+	public acceptedAttributes: set of seq of char := {};
+	public name: seq of char := "" ;
+operations
+	--constructor with name
+	public ProductType: seq of char ==> ProductType
+		ProductType(n) == (
+			name := n;
+			return self
+		);
+	
+	--adds an accepted attribute to this tipe of product
+	--e.g: carType.accepts("color")
+	public addAttributeAcceptance: seq of char ==> ()
+		addAttributeAcceptance(attributeName) == (
+			acceptedAttributes := acceptedAttributes union {attributeName}
+		);
+	
+	--checks if this product type accepts a kind of attribute
+	--e.g: carType.accepts("year")
+	public accepts: seq of char ==> bool
+		accepts(attributeName) == (
+			return attributeName in set acceptedAttributes
+		);
+functions
+
+
+end ProductType
